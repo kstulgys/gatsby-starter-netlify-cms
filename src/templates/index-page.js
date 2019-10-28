@@ -5,55 +5,97 @@ import { Link, graphql } from "gatsby"
 import Layout from "../components/Layout"
 import Features from "../components/Features"
 import BlogRoll from "../components/BlogRoll"
+import { Box, Text, ThemeProvider, CSSReset, ColorModeProvider, Flex, Image } from "@chakra-ui/core"
+
+const Header = ({ image, title, subheading }) => (
+  <Flex
+    backgroundImage={`url(https://images.unsplash.com/photo-1505526484636-f0a465cf6d19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1900&q=80)`}
+    // backgroundColor="purple.900"
+    height="100vh"
+    backgroundPosition="center"
+    backgroundRepeat="no-repeat"
+    backgroundSize="cover"
+    position="relative"
+  >
+    <Flex flex="1" justify="center" align="center" flexDir="column">
+      <Text
+        textTransform="uppercase"
+        px="10"
+        py="6"
+        textShadow="0 5px 10px rgba(0,0,0,1)"
+        bg="rgba(0,0,0,.5)"
+        boxShadow="xl"
+        position="relative"
+        fontSize="6xl"
+        fontWeight="semibold"
+        color="gray.200"
+        // style={{ mixBlendMode: "overlay" }}
+      >
+        {title}
+      </Text>
+      <Text
+        mt="4"
+        // textTransform="uppercase"
+        px="10"
+        py="6"
+        textShadow="0 5px 10px rgba(0,0,0,1)"
+        bg="rgba(0,0,0,.6)"
+        boxShadow="xl"
+        position="relative"
+        fontSize="6xl"
+        fontWeight="medium"
+        color="gray.200"
+        fontSize="4xl"
+        mb="10%"
+      >
+        {subheading}
+      </Text>
+    </Flex>
+  </Flex>
+)
 
 export const IndexPageTemplate = ({ image, title, heading, subheading, mainpitch, description, intro, helloworld }) => (
-  <div>
-    <div
-      className="full-width-image margin-top-0"
-      style={{
-        backgroundImage: `url(${!!image.childImageSharp ? image.childImageSharp.fluid.src : image})`,
-        backgroundPosition: `top left`,
-        backgroundAttachment: `fixed`
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          height: "150px",
-          lineHeight: "1",
-          justifyContent: "space-around",
-          alignItems: "left",
-          flexDirection: "column"
-        }}
-      >
-        <h1
-          className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen"
-          style={{
-            boxShadow: "rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px",
-            backgroundColor: "rgb(255, 68, 0)",
-            color: "white",
-            lineHeight: "1",
-            padding: "0.25em"
-          }}
-        >
-          {title}
-        </h1>
-        <h1 className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen">{helloworld}</h1>
-        <h3
-          className="has-text-weight-bold is-size-5-mobile is-size-5-tablet is-size-4-widescreen"
-          style={{
-            boxShadow: "rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px",
-            backgroundColor: "rgb(255, 68, 0)",
-            color: "white",
-            lineHeight: "1",
-            padding: "0.25em"
-          }}
-        >
-          {subheading}
-        </h3>
-      </div>
-    </div>
-    <section className="section section--gradient">
+  <Box>
+    <Header image={image.childImageSharp} title={title} subheading={subheading} />
+    <Box minHeight="100vh" as="section" width="full" maxWidth="5xl" mx="auto" px="4">
+      <Flex pt="20">
+        <Box width="50%" p="4" pl="0">
+          <Box
+            overflow="hidden"
+            // Calculated from the aspect ration of the content (in case of 16:9 it is 9/16= 0.5625)
+            pt="56.25%"
+            position="relative"
+          >
+            <Box
+              border="0"
+              left=" 0"
+              position="absolute"
+              top="0"
+              allowFullScreen={true}
+              width="full"
+              height="full"
+              as="iframe"
+              title="sodyba-video"
+              src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F1123021504414978%2Fvideos%2F1836175046432950%2F"
+              frameBorder="0"
+            />
+          </Box>
+        </Box>
+
+        <Box width="50%" p="4" pr="0">
+          <Text fontSize="xl" fontWeight="semibold" mb="2">
+            {mainpitch.title}
+          </Text>
+          <Text>{mainpitch.description}</Text>
+        </Box>
+      </Flex>
+      <Box mt="20">
+        <Flex height="56" width="64" bg="purple.300">
+          hi
+        </Flex>
+      </Box>
+    </Box>
+    {/* <section className="section section--gradient">
       <div className="container">
         <div className="section">
           <div className="columns">
@@ -95,8 +137,8 @@ export const IndexPageTemplate = ({ image, title, heading, subheading, mainpitch
           </div>
         </div>
       </div>
-    </section>
-  </div>
+    </section> */}
+  </Box>
 )
 
 IndexPageTemplate.propTypes = {
@@ -146,6 +188,7 @@ export const pageQuery = graphql`
     markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
       frontmatter {
         title
+        helloworld
         image {
           childImageSharp {
             fluid(maxWidth: 2048, quality: 100) {
@@ -154,7 +197,6 @@ export const pageQuery = graphql`
           }
         }
         heading
-        helloworld
         subheading
         mainpitch {
           title
